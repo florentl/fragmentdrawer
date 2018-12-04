@@ -2,11 +2,8 @@ package fr.wcs.navigationdrawer;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,9 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import fr.wcs.navigationdrawer.fragment.About;
+import fr.wcs.navigationdrawer.fragment.Category;
+import fr.wcs.navigationdrawer.fragment.Home;
+import fr.wcs.navigationdrawer.fragment.Item;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Home.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Home.OnFragmentInteractionListener, About.OnFragmentInteractionListener,
+        Category.OnFragmentInteractionListener, Item.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,20 +87,27 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment myFragment = null;
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        String activityTitle="";
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.home_link) {
+            myFragment = new Home();
+            activityTitle = "Home";
+        } else if (id == R.id.category_link) {
+            activityTitle = "Category";
+            myFragment = new Category();
+        } else if (id == R.id.item_link) {
+            activityTitle = "Item";
+            myFragment = new Item();
+        } else if (id == R.id.about_link) {
+            activityTitle = "About";
+            myFragment = new About();
         }
+
+        getSupportActionBar().setTitle( activityTitle );
+        ft.replace(R.id.content_main, myFragment );
+        ft.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout );
         drawer.closeDrawer( GravityCompat.START );
